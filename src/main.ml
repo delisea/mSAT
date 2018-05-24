@@ -14,7 +14,11 @@ let p_check = ref false
 let p_dot_proof = ref ""
 let p_proof_print = ref false
 let time_limit = ref 300.
+let itime_limit = ref 300
 let size_limit = ref 1000_000_000.
+
+let _ = Vpl.Flags.handelman_loop := true
+let _ = Vpl.Flags.handelman_timeout := None
 
 module P =
   Dolmen.Logic.Make(Dolmen.ParseLocation)
@@ -103,29 +107,117 @@ module Make
         Dolmen.Statement.print s
 end
 
-module Sat = Make(Sat.Make(struct end))(Type_sat)
-module Smt = Make(Smt.Make(struct end))(Type_smt)
-module Mcsat = Make(Mcsat.Make(struct end))(Type_smt)
+module NotDummyTheory = struct
+  module FI = Expr_smt
+  module F = FI.Atom
+  module T_I = Theory_intf
+  (* We don't have anything to do since the SAT Solver already
+   * does propagation and conflict detection *)
 
-let solver = ref (module Sat : S)
-let solver_list = [
-  "sat", (module Sat : S);
-  "smt", (module Smt : S);
-  "mcsat", (module Mcsat : S);
-]
+  type formula = F.t
+  (* type proof = F.proof *)
+  type proof = unit
+  type level = FI.polyhedre
+  type slice = (formula, proof) T_I.slice
+
+  let dummy = FI.empty
+
+  let _current_level: level ref = ref dummy
+
+  let tempo: int ref = ref 0
+
+  let current_level () = !_current_level
+  let assume (sl: slice): (formula, proof) Theory_intf.res = let _ = print_endline "a" in
+    let rec inner s e =
+      if s = e then
+        ()
+      else
+        let _ = F.print Format.str_formatter (sl.T_I.get s) in
+        let _ = Log.debug 99 ("next:" ^ (Format.flush_str_formatter ())) in
+          inner (s+1) e
+    in
+    let rec next_Cstr (s: int) (e: int): (FI.condition * int * bool) option =
+      if s = e then
+        None
+      else
+        match F.extract_Cstr (sl.T_I.get s) with
+        | Some(c,non_neg) -> Some(c,(s+1),non_neg)
+        | None -> next_Cstr (s+1) e
+    in
+    let _ = Log.debug 99 "start assuming" in
+    let _ = inner sl.T_I.start (sl.T_I.start + sl.T_I.length) in
+    let _ = Log.debug 99 "stop assuming" in
+    let rec iinner (s: int) (e: int) (p: FI.polyhedre) (fl: formula list) =
+      match next_Cstr s e with
+      | Some(c, s, non_neg) ->
+        let p = if non_neg then FI.assume [c] p else match FI.Term.negate_cstr c with |c,None -> FI.assume [c] p |c1,Some(c2) -> FI.assume [c1;c2] p in
+        if FI.is_bottom p then
+          Theory_intf.Unsat ((List.map F.neg ((sl.T_I.get (s-1))::fl)),())
+        else
+          iinner s e p ((sl.T_I.get (s-1))::fl)
+      | None -> let _ = _current_level := p in Theory_intf.Sat
+    in
+    let res = iinner sl.T_I.start (sl.T_I.start + sl.T_I.length) !_current_level [] in
+    let _ = if res = Theory_intf.Sat then Log.debug 99 "Result: Sat"
+    else Log.debug 99 "Result: Unsat" in
+      res
+
+
+  let backtrack (l: level) =
+    _current_level := l
+
+
+  let if_sat (sl: slice): (formula, proof) Theory_intf.res =
+    let rec inner s e =
+      if s = e then
+        ()
+      else
+        let _ = F.print Format.str_formatter (sl.T_I.get s) in
+        let _ = Log.debug 99 ("next:" ^ (Format.flush_str_formatter ())) in
+          inner (s+1) e
+    in
+    let rec next_Cstr (s: int) (e: int): (FI.condition * int * bool) option =
+      if s = e then
+        None
+      else
+        match F.extract_Cstr (sl.T_I.get s) with
+        | Some(c,non_neg) -> Some(c,(s+1),non_neg)
+        | None -> next_Cstr (s+1) e
+    in
+    let _ = Log.debug 99 "start if_sat" in
+    let _ = inner sl.T_I.start (sl.T_I.start + sl.T_I.length) in
+    let _ = Log.debug 99 "stop if_sat" in
+    let rec iinner (s: int) (e: int) (p: FI.polyhedre) (fl: formula list) =
+      match next_Cstr s e with
+      | Some(c, s, non_neg) ->
+        let p = if non_neg then FI.assume [c] p else match FI.Term.negate_cstr c with |c,None -> FI.assume [c] p |c1,Some(c2) -> FI.assume [c1;c2] p in
+        if FI.is_bottom p then
+          Theory_intf.Unsat ((List.map F.neg ((sl.T_I.get (s-1))::fl)),())
+        else
+          iinner s e p ((sl.T_I.get (s-1))::fl)
+      | None -> let _ = _current_level := p in Theory_intf.Sat
+    in
+    let res = iinner sl.T_I.start (sl.T_I.start + sl.T_I.length) !_current_level [] in
+    let _ = if res = Theory_intf.Sat then Log.debug 99 "Result: Sat"
+    else Log.debug 99 "Result: Unsat" in
+    (* let _ = tempo := !tempo + 1 in
+    let _ = if !tempo > 1 then failwith "stop" in *)
+      res
+end
+
+module Th = NotDummyTheory
+
+module SMake(Dummy:sig end) =
+  Solver.Make(Expr_smt.Atom)(Th)(struct end)
+
+module Smt = Make(SMake(struct end))(Type_smt)
+
+(* module Smt = Make(Smt.Make(struct end))(Type_smt) *)
 
 let error_msg opt arg l =
   Format.fprintf Format.str_formatter "'%s' is not a valid argument for '%s', valid arguments are : %a"
     arg opt (fun fmt -> List.iter (fun (s, _) -> Format.fprintf fmt "%s, " s)) l;
   Format.flush_str_formatter ()
-
-let set_flag opt arg flag l =
-  try
-    flag := List.assoc arg l
-  with Not_found ->
-    invalid_arg (error_msg opt arg l)
-
-let set_solver s = set_flag "Solver" s solver solver_list
 
 (* Arguments parsing *)
 let int_arg r arg =
@@ -169,11 +261,9 @@ let argspec = Arg.align [
     " If provided, print the dot proof in the given file";
     "-gc", Arg.Unit setup_gc_stat,
     " Outputs statistics about the GC";
-    "-s", Arg.String set_solver,
-    "{sat,smt,mcsat} Sets the solver to use (default smt)";
     "-size", Arg.String (int_arg size_limit),
     "<s>[kMGT] Sets the size limit for the sat solver";
-    "-time", Arg.String (int_arg time_limit),
+    "-time", Arg.String (fun x -> itime_limit := (int_of_string x); int_arg time_limit x),
     "<t>[smhd] Sets the time limit for the sat solver";
     "-v", Arg.Int (fun i -> Log.set_debug i),
     "<lvl> Sets the debug verbose level";
@@ -189,6 +279,10 @@ let check () =
   else if s > !size_limit then
     raise Out_of_space
 
+let beep _ = 
+    print_endline "end";
+    Format.printf "Timeout@.";
+    exit 2(* ; flush stdout; ignore (alarm 30) *)
 
 let main () =
   (* Administrative duties *)
@@ -197,21 +291,27 @@ let main () =
     Arg.usage argspec usage;
     exit 2
   end;
+  let _ = Sys.signal Sys.sigalrm (Sys.Signal_handle beep) in
+  let _ = ignore (Unix.alarm !itime_limit) in
   let al = Gc.create_alarm check in
 
   (* Interesting stuff happening *)
   let lang, input = P.parse_file !file in
-  let module S = (val !solver : S) in
-  List.iter S.do_task input;
-  (* Small hack for dimacs, which do not output a "Prove" statement *)
-  begin match lang with
-    | P.Dimacs -> S.do_task @@ Dolmen.Statement.check_sat ()
-    | _ -> ()
-  end;
+  let _ = (
+    match lang with
+    | P.Smtlib -> print_endline "Smtlib"
+    | P.Dimacs ->  print_endline "Dimacs"
+    | P.ICNF ->  print_endline "ICNF"
+    | P.Tptp ->  print_endline "Tptp"
+    | P.Zf ->  print_endline "Zf"
+  ) in
+  List.iter Smt.do_task input;
   Gc.delete_alarm al;
   ()
 
-let () =
+let () = 
+let _ = Random.self_init () in
+let _ = Log.set_debug 5 in
   try
     main ()
   with
@@ -234,4 +334,3 @@ let () =
       Dolmen.Term.print t Dolmen.ParseLocation.fmt loc msg;
     if Printexc.backtrace_status () then
       Format.fprintf Format.std_formatter "%s@." b
-

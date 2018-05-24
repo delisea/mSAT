@@ -1,3 +1,4 @@
+true: package(vpl)
 # colors
 true: bin_annot, color(always)
 

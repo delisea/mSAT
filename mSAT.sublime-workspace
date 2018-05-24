@@ -1,0 +1,407 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ARG",
+				"ARG_C"
+			],
+			[
+				"A",
+				"ARG_M"
+			],
+			[
+				"AR",
+				"ARG_MA"
+			],
+			[
+				"list",
+				"list_var"
+			],
+			[
+				"int",
+				"int_of_float"
+			],
+			[
+				"ge",
+				"genDefv"
+			],
+			[
+				"strin",
+				"string"
+			],
+			[
+				"ocaml",
+				"ocaml_smt"
+			],
+			[
+				"out",
+				"output_sufix"
+			],
+			[
+				"arg",
+				"argr"
+			],
+			[
+				"trin",
+				"toString_smt"
+			],
+			[
+				"sm",
+				"smt_tree"
+			],
+			[
+				"sage",
+				"sage_pb"
+			],
+			[
+				"print_",
+				"print_endline"
+			],
+			[
+				"inn",
+				"inner_p"
+			],
+			[
+				"smt_t",
+				"smt_tree"
+			],
+			[
+				"sy",
+				"symbol"
+			],
+			[
+				"gen",
+				"genAfffact"
+			],
+			[
+				"whi",
+				"with"
+			],
+			[
+				"pr",
+				"print_smt"
+			],
+			[
+				"w",
+				"with"
+			],
+			[
+				"in",
+				"int"
+			],
+			[
+				"prin",
+				"print_endline"
+			],
+			[
+				"toS",
+				"toString_pol"
+			],
+			[
+				"con",
+				"concat"
+			],
+			[
+				"inner",
+				"inner_prod"
+			],
+			[
+				"str",
+				"string_of_int"
+			],
+			[
+				"par",
+				"parser_sage"
+			],
+			[
+				"tok",
+				"token_addsub"
+			],
+			[
+				"set",
+				"setAddPrio"
+			],
+			[
+				"to",
+				"token_muldiv"
+			],
+			[
+				"Stre",
+				"stream"
+			],
+			[
+				"token",
+				"tokenize"
+			],
+			[
+				"toke",
+				"token_pow"
+			],
+			[
+				"stream",
+				"stream_fold"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/main.ml",
+			"settings":
+			{
+				"buffer_size": 6952,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 497.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/delisea/workspace/mSAT",
+		"/home/delisea/workspace/mSAT/src",
+		"/home/delisea/workspace/mSAT/tests"
+	],
+	"file_history":
+	[
+		"/home/delisea/workspace/mSAT/_build/src/main.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/_tags",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/tttr",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/sage_pipe",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/batch_generator_bqp.sh",
+		"/home/delisea/workspace/LAMP/stage_2016/src/smt/smtlib_build.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/problem_generator_mvar.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/out.smt2",
+		"/home/delisea/workspace/LAMP/stage_2016/sage_sage_pb",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/fact_watch.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/dev.sage",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/batch_generator.sh",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/problem_generator.ml",
+		"/home/delisea/Bureau/lamp.sublime-project",
+		"/home/delisea/workspace/LAMP/stage_2016/src/smt/smtlib_syntax.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/src/smt/pol.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/cyclopol",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/vars",
+		"/home/delisea/workspace/LAMP/stage_2016/src/ocaml_smt.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/pgen.sage",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/pc4a3f_fact.smt2",
+		"/home/delisea/workspace/LAMP/stage_2016/masstest.sh",
+		"/home/delisea/workspace/LAMP/stage_2016/theory_test.smt",
+		"/home/delisea/workspace/LAMP/stage_2016/vpl_sage.sage",
+		"/home/delisea/workspace/LAMP/stage_2016/sage_pb",
+		"/home/delisea/workspace/LAMP/stage_2016/vpl_sage.sage.py",
+		"/home/delisea/workspace/LAMP/stage_2016/sage_test.sage",
+		"/home/delisea/workspace/LAMP/stage_2016/src/Vector.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/src/CstrPoly.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/src/Poly.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/poltest.smt2",
+		"/home/delisea/workspace/LAMP/stage_2016/src/Cstr.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/Makefile",
+		"/home/delisea/workspace/LAMP/stage_2016/src/smt/pol.mli",
+		"/home/delisea/workspace/LAMP/stage_2016/vsage_pb",
+		"/home/delisea/workspace/LAMP/stage_2016/src/smt/smtlib_parse.mly",
+		"/home/delisea/workspace/LAMP/stage_2016/src/smt/smt_analyser.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator/test.smt2",
+		"/home/delisea/workspace/LAMP/stage_2016/problem_generator.ml",
+		"/home/delisea/workspace/LAMP/stage_2016/poltest",
+		"/home/delisea/workspace/LAMP/stage_2016/src/smt/sage_parse.mly",
+		"/home/delisea/workspace/LAMP/stage_2016/test.sage",
+		"/home/delisea/Bureau/test.smt2",
+		"/home/delisea/Bureau/test_simple.smt2",
+		"/home/delisea/Bureau/simpleraw.smt2",
+		"/home/delisea/Bureau/QF_NRA-master-2681ef001d8592ee7936271810ba5dd5abf09dd0/meti-tarski/CMOS/CMOS-opamp-chunk-0340.smt2",
+		"/home/delisea/Bureau/harder.smt2",
+		"/home/delisea/Bureau/QF_NRA-master-2681ef001d8592ee7936271810ba5dd5abf09dd0/hycomp/ball_count_1d_plain.01.seq_lazy_lemmas_global_10.smt2",
+		"/home/delisea/Bureau/QF_NRA-master-2681ef001d8592ee7936271810ba5dd5abf09dd0/hycomp/ball_count_1d_plain.01.seq_lazy_lemmas_global_12.smt2"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 98.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/main.ml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6952,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1204,
+								1204
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/OCaml/OCaml.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 653.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "mSAT.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 187.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

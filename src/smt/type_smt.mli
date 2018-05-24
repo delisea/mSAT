@@ -5,3 +5,6 @@
 
 include Type.S with type atom := Expr_smt.Atom.t
 
+type condition
+(* module VPL = Vpl *)
+(* val assume: Vpl.UserInterface.CP.Poly.t -> unit *)
