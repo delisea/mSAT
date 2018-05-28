@@ -86,9 +86,16 @@ module Make
       hyps := cnf @ !hyps;
       S.assume cnf
     | Dolmen.Statement.Antecedent t ->
-      let cnf = T.antecedent t in
-      hyps := cnf @ !hyps;
-      S.assume cnf
+      (* let cnf = T.antecedent t in *)
+      (* hyps := cnf @ !hyps; *)
+      let cnf = ref (T.antecedent t) in
+      let _ =
+      while !cnf != [] do
+        match !cnf with
+        | c::cl -> hyps := c::!hyps; cnf := cl
+      done in
+
+      S.assume !cnf
     | Dolmen.Statement.Pack [
         { Dolmen.Statement.descr = Dolmen.Statement.Push 1; };
         { Dolmen.Statement.descr = Dolmen.Statement.Antecedent f; };
@@ -127,7 +134,7 @@ module NotDummyTheory = struct
   let tempo: int ref = ref 0
 
   let current_level () = !_current_level
-  let assume (sl: slice): (formula, proof) Theory_intf.res = let _ = print_endline "a" in
+  let assume (sl: slice): (formula, proof) Theory_intf.res =
     let rec inner s e =
       if s = e then
         ()
@@ -152,6 +159,8 @@ module NotDummyTheory = struct
       | Some(c, s, non_neg) ->
         let p = if non_neg then FI.assume [c] p else match FI.Term.negate_cstr c with |c,None -> FI.assume [c] p |c1,Some(c2) -> FI.assume [c1;c2] p in
         if FI.is_bottom p then
+          (* Theory_intf.Unsat ((List.map F.neg ((sl.T_I.get (s-1))::fl)),()) *)
+          let cert = FI.get_bottom_cert p in
           Theory_intf.Unsat ((List.map F.neg ((sl.T_I.get (s-1))::fl)),())
         else
           iinner s e p ((sl.T_I.get (s-1))::fl)

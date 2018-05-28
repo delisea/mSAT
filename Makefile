@@ -2,6 +2,7 @@
 
 LOG=build.log
 COMP=ocamlbuild -log $(LOG) -use-ocamlfind
+#FLAGS=-tag -debug
 FLAGS=
 DOC=src/msat.docdir/index.html
 BIN=main.native
@@ -14,6 +15,7 @@ LIB=$(addprefix $(NAME), .cma .cmxa .cmxs)
 all: lib test
 
 lib:
+	export OCAMLRUNPARAM=b
 	$(COMP) $(FLAGS) $(LIB)
 
 doc:

@@ -2,8 +2,8 @@
    Base modules that defines the terms used in the prover.
 *)
 
-(* module Dom = Vpl.WDomain *)
-module Dom = Vpl.NCDomain.NCVPL_Unit
+module Dom = Vpl.WDomain
+(* module Dom = Vpl.NCDomain.NCVPL_Unit *)
 module Polynomial = Dom.I_Q.Term
 module Var = Vpl.Var.Positive
 
@@ -54,6 +54,34 @@ let to_cond (s: cmpT) (g: polynomial) (d: polynomial): condition =
 
 let to_coeff (n: float): coeff =
   Vpl.Scalar.Rat.of_float n
+
+let to_cmpT (cmp: Vpl.Cstr.cmpT): cmpT =
+  match cmp with
+  | Eq -> EQ
+  | Le -> LE
+  | Lt -> LT
+
+(* (Vpl.Scalar.Rat.t * Vpl.Pol.Cs.t) list *)
+let get_bottom_cert (p: polyhedre): (cmpT * polynomial) list =
+  match Dom.I_Q.get_bottom_cert p with
+  | Some(f) ->
+    List.fold_left (fun x (co,cp) ->
+    let cs = Vpl.WrapperTraductors.CP.ofCstr cp in
+    let cp = ((to_cmpT cs.Vpl.WrapperTraductors.CP.typ),Polynomial.Poly(cs.Vpl.WrapperTraductors.CP.p)) in
+    if co != Vpl.Scalar.Rat.z then
+      (cp::x)
+    else
+      x) [] f
+  | None -> failwith "cert: not bottom"
+
+
+(* (Vpl.Scalar.Rat.t * Vpl.Pol.Cs.t) list *)
+(* let get_bottom_cert (p: polyhedre): (cmpT * polynomial) list =
+  match Dom.I_Q.get_bottom_cert p with
+  | Some(f) ->
+    let csl = List.map (fun (co,cp) -> Vpl.WrapperTraductors.CP.ofCstr cp) f in
+      List.map (fun (cs) -> ((to_cmpT cs.Vpl.WrapperTraductors.CP.typ),Polynomial.Poly(cs.Vpl.WrapperTraductors.CP.p))) csl
+  | None -> failwith "cert: not bottom" *)
 
 (* let rec print_expr (e: IntVpl.VPL_Expr.t): string =
   match e with
@@ -214,10 +242,9 @@ module Id = struct
     let rec inner l i =
       match l with
       | x::ll when 0 = String.compare x symbol -> 1 + !id_table_len - i
-      | x::ll -> let _ = print_endline ("nop " ^ symbol ^ " " ^ x) in inner ll (i+1)
+      | x::ll -> inner ll (i+1)
       | [] -> id_table := symbol::(!id_table); id_table_len := !id_table_len + 1; i + 1
     in
-      let _ = print_endline ("new_var " ^ symbol ^ " " ^(string_of_int (inner (!id_table) 1))) in
       { symbol = symbol; index = (inner (!id_table) 0) }
 
   let new_unknown_var () =
