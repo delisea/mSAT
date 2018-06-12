@@ -1,6 +1,4 @@
-(declare-fun x () Real)
-(assert (= (* x x) 2))
-(assert (> x -1))
-(assert (< x 100))
+(declare-fun A () Bool)
+(assert (and A (not A)))
 (check-sat)
 

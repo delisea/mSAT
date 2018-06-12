@@ -93,6 +93,7 @@ module Make
       while !cnf != [] do
         match !cnf with
         | c::cl -> hyps := c::!hyps; cnf := cl
+        | [] -> failwith "can't happend"
       done in
 
       S.assume !cnf
