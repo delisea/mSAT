@@ -8,8 +8,8 @@
 (** {3 Identifiers} *)
 
 (** Identifiers are the basic building blocks used to build types terms and expressions. *)
-(* module Dom = Vpl.WDomain *)
-module Dom = Vpl.NCDomain.NCVPL_Unit
+module Dom = Vpl.WDomain
+(* module Dom = Vpl.NCDomain.NCVPL_Unit *)
 module Polynomial = Dom.I_Q.Term
 module Var = Vpl.Var.Positive
 
@@ -24,6 +24,7 @@ type coeff = Vpl.Scalar.Rat.t
 
 val empty: polyhedre
 val is_bottom: polyhedre -> bool
+val get_bottom_cert: polyhedre -> condition list
 val assume: condition list -> polyhedre -> polyhedre
 val to_cond: cmpT -> polynomial -> polynomial -> condition
 val to_coeff: float -> coeff
