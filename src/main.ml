@@ -17,7 +17,7 @@ let time_limit = ref 300.
 let itime_limit = ref 300
 let size_limit = ref 1000_000_000.
 
-let _ = Vpl.Flags.handelman_loop := true
+let _ = Vpl.Flags.handelman_loop := false
 let _ = Vpl.Flags.handelman_timeout := None
 
 module P =
@@ -86,9 +86,21 @@ module Make
       hyps := cnf @ !hyps;
       S.assume cnf
     | Dolmen.Statement.Antecedent t ->
-      let cnf = T.antecedent t in
+      (* let cnf = T.antecedent t in
       hyps := cnf @ !hyps;
-      S.assume cnf
+      S.assume cnf *)
+
+      let cnf = (T.antecedent t) in
+      let cp = ref cnf in
+      let _ = 
+      while !cp != [] do 
+        match !cp with 
+        | c::cl -> hyps := c::!hyps; cp := cl 
+      done in 
+ 
+      S.assume cnf 
+
+
     | Dolmen.Statement.Pack [
         { Dolmen.Statement.descr = Dolmen.Statement.Push 1; };
         { Dolmen.Statement.descr = Dolmen.Statement.Antecedent f; };
